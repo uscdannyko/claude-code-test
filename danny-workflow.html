@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Danny's AI Rap Production Workflow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --white: #ffffff;
+      --black: #000000;
+      --transparent: transparent;
+      --blue-300: #93c5fd;
+      --blue-400: #60a5fa;
+      --blue-500: #3b82f6;
+      --indigo-300: #a5b4fc;
+      --violet-200: #ddd6fe;
+    }
+
+    @keyframes aurora {
+      from { background-position: 50% 50%, 50% 50%; }
+      to   { background-position: 350% 50%, 350% 50%; }
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      background: #f4f4f5;
+    }
+
+    .aurora-bg {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      background: #f4f4f5;
+      overflow: hidden;
+      padding: 64px 16px;
+    }
+
+    .aurora-layer {
+      position: absolute;
+      inset: -10px;
+      pointer-events: none;
+      opacity: 0.5;
+      filter: blur(10px) invert(1);
+      background-image:
+        repeating-linear-gradient(100deg, var(--white) 0%, var(--white) 7%, var(--transparent) 10%, var(--transparent) 12%, var(--white) 16%),
+        repeating-linear-gradient(100deg, var(--blue-500) 10%, var(--indigo-300) 15%, var(--blue-300) 20%, var(--violet-200) 25%, var(--blue-400) 30%);
+      background-size: 300%, 200%;
+      background-position: 50% 50%, 50% 50%;
+      animation: aurora 60s linear infinite;
+      mask-image: radial-gradient(ellipse at 100% 0%, black 10%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at 100% 0%, black 10%, transparent 70%);
+    }
+
+    .content {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .fade-in { animation: fadein 0.7s ease-out both; }
+    .fade-in-1 { animation-delay: 0.1s; }
+    .fade-in-2 { animation-delay: 0.25s; }
+    .fade-in-3 { animation-delay: 0.4s; }
+    .fade-in-4 { animation-delay: 0.55s; }
+
+    .card {
+      background: rgba(255,255,255,0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 1rem;
+      padding: 24px;
+      flex: 1;
+      min-width: 270px;
+      max-width: 410px;
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(0,0,0,0.75);
+      color: white;
+      padding: 3px 12px;
+      border-radius: 999px;
+    }
+
+    .step-icon { font-size: 1.25rem; margin-top: 2px; flex-shrink: 0; }
+    .step-tool { font-weight: 600; font-size: 0.875rem; color: #0f172a; margin: 0 0 2px; }
+    .step-detail { font-size: 0.75rem; color: #475569; margin: 0; line-height: 1.6; }
+
+    .cards-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="aurora-bg">
+    <div class="aurora-layer"></div>
+
+    <div class="content">
+
+      <!-- Header -->
+      <div class="fade-in fade-in-1 text-center">
+        <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#64748b;margin-bottom:8px;">
+          Actually you are a rapper bruh hehehe
+        </p>
+        <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:800;color:#0f172a;line-height:1.15;margin:0 0 16px;">
+          AI-Assisted Rap<br>Production Workflow
+        </h1>
+        <p style="color:#475569;font-size:1rem;max-width:480px;margin:0 auto;">
+          Logic Pro &middot; pre-made beats &middot; chat-based mixing &middot; one-click mastering
+        </p>
+      </div>
+
+      <!-- Stack cards -->
+      <div class="cards-row fade-in fade-in-2">
+
+        <!-- Lean Stack -->
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+            <span class="badge">Start here</span>
+            <h2 style="font-weight:700;font-size:1rem;margin:0;color:#0f172a;">Lean Stack</h2>
+          </div>
+          <ol style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px;">
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span class="step-icon">🎙️</span>
+              <div><p class="step-tool">Logic Pro</p><p class="step-detail">Record vocals → Flex Pitch tuning → Vocal Doubler thickening</p></div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span class="step-icon">📤</span>
+              <div><p class="step-tool">Bounce Stem</p><p class="step-detail">File → Bounce → PCM &middot; Export as WAV or AIFF</p></div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span class="step-icon">🎚️</span>
+              <div><p class="step-tool">Cryo Mix</p><p class="step-detail">Upload vocal stem + beat stereo file &middot; Chat-based mix tweaks</p></div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span class="step-icon">✨</span>
+              <div><p class="step-tool">LANDR</p><p class="step-detail">One-click AI mastering &middot; Download release-ready track</p></div>
+            </li>
+          </ol>
+        </div>
+
+        <!-- Upgraded Stack -->
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+            <span class="badge">Power mode</span>
+            <h2 style="font-weight:700;font-size:1rem;margin:0;color:#0f172a;">Upgraded Stack</h2>
+          </div>
+          <ol style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px;">
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span class="step-icon">🎙️</span>
+              <div><p class="step-tool">Logic Pro</p><p class="step-detail">Record vocals → Flex Pitch → Vocal Doubler</p></div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span class="step-icon">🎤</span>
+              <div><p class="step-tool">SoundID VoiceAI</p><p class="step-detail">Generate up to 8 vocal layers from a single take &middot; AU/VST3 plugin</p></div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span class="step-icon">📤</span>
+              <div><p class="step-tool">Bounce Stem</p><p class="step-detail">Export thickened vocal stem as WAV/AIFF</p></div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span class="step-icon">🎚️</span>
+              <div><p class="step-tool">Cryo Mix</p><p class="step-detail">Mix layered vocals over stereo beat &middot; Dial in with chat prompts</p></div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span class="step-icon">✨</span>
+              <div><p class="step-tool">LANDR / Ozone</p><p class="step-detail">LANDR for speed &middot; iZotope Ozone inside Logic for more control</p></div>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="card fade-in fade-in-3" style="max-width:600px;width:100%;">
+        <h3 style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#0f172a;margin:0 0 12px;">
+          Key Clarifications
+        </h3>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
+          <li style="display:flex;gap:8px;font-size:0.75rem;color:#475569;line-height:1.6;">
+            <span style="color:#94a3b8;flex-shrink:0;">–</span>
+            SoundID VoiceAI layers your vocal — it does NOT generate beats or instrumentals
+          </li>
+          <li style="display:flex;gap:8px;font-size:0.75rem;color:#475569;line-height:1.6;">
+            <span style="color:#94a3b8;flex-shrink:0;">–</span>
+            Cryo Mix is purpose-built for the rapper vocal + stereo beat use case
+          </li>
+          <li style="display:flex;gap:8px;font-size:0.75rem;color:#475569;line-height:1.6;">
+            <span style="color:#94a3b8;flex-shrink:0;">–</span>
+            RoEx Automix requires individual stems — skip it for pre-made beat workflows
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
