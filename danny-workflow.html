@@ -4,216 +4,328 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Danny's AI Rap Production Workflow</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --white: #ffffff;
-      --black: #000000;
-      --transparent: transparent;
-      --blue-300: #93c5fd;
-      --blue-400: #60a5fa;
-      --blue-500: #3b82f6;
-      --indigo-300: #a5b4fc;
-      --violet-200: #ddd6fe;
-    }
-
-    @keyframes aurora {
-      from { background-position: 50% 50%, 50% 50%; }
-      to   { background-position: 350% 50%, 350% 50%; }
-    }
-
-    @keyframes fadein {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, sans-serif;
-      background: #f4f4f5;
-    }
-
-    .aurora-bg {
-      position: relative;
+      font-family: 'Google Sans', ui-sans-serif, system-ui, sans-serif;
+      background: #fff;
+      color: #202124;
       min-height: 100vh;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      background: #f4f4f5;
-      overflow: hidden;
-      padding: 64px 16px;
     }
 
-    .aurora-layer {
-      position: absolute;
-      inset: -10px;
+    /* ── Particles canvas ── */
+    #particles {
+      position: fixed;
+      inset: 0;
       pointer-events: none;
-      opacity: 0.5;
-      filter: blur(10px) invert(1);
-      background-image:
-        repeating-linear-gradient(100deg, var(--white) 0%, var(--white) 7%, var(--transparent) 10%, var(--transparent) 12%, var(--white) 16%),
-        repeating-linear-gradient(100deg, var(--blue-500) 10%, var(--indigo-300) 15%, var(--blue-300) 20%, var(--violet-200) 25%, var(--blue-400) 30%);
-      background-size: 300%, 200%;
-      background-position: 50% 50%, 50% 50%;
-      animation: aurora 60s linear infinite;
-      mask-image: radial-gradient(ellipse at 100% 0%, black 10%, transparent 70%);
-      -webkit-mask-image: radial-gradient(ellipse at 100% 0%, black 10%, transparent 70%);
+      z-index: 0;
     }
 
-    .content {
+    /* ── Layout ── */
+    .page {
       position: relative;
-      z-index: 10;
-      width: 100%;
-      max-width: 900px;
+      z-index: 1;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 40px;
+      padding: 72px 20px 80px;
+      gap: 48px;
     }
 
-    .fade-in { animation: fadein 0.7s ease-out both; }
-    .fade-in-1 { animation-delay: 0.1s; }
-    .fade-in-2 { animation-delay: 0.25s; }
-    .fade-in-3 { animation-delay: 0.4s; }
-    .fade-in-4 { animation-delay: 0.55s; }
+    /* ── Header ── */
+    .hero { text-align: center; max-width: 560px; }
 
-    .card {
-      background: rgba(255,255,255,0.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.5);
-      border-radius: 1rem;
-      padding: 24px;
-      flex: 1;
-      min-width: 270px;
-      max-width: 410px;
-    }
-
-    .badge {
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      background: rgba(0,0,0,0.75);
-      color: white;
-      padding: 3px 12px;
-      border-radius: 999px;
+      color: #5f6368;
+      margin-bottom: 14px;
     }
 
-    .step-icon { font-size: 1.25rem; margin-top: 2px; flex-shrink: 0; }
-    .step-tool { font-weight: 600; font-size: 0.875rem; color: #0f172a; margin: 0 0 2px; }
-    .step-detail { font-size: 0.75rem; color: #475569; margin: 0; line-height: 1.6; }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 500;
+      color: #202124;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
 
-    .cards-row {
+    .hero p {
+      font-size: 14px;
+      color: #5f6368;
+      line-height: 1.7;
+    }
+
+    /* ── Cards row ── */
+    .cards {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 24px;
+      gap: 20px;
       width: 100%;
+      max-width: 900px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #dadce0;
+      border-radius: 16px;
+      padding: 28px;
+      flex: 1;
+      min-width: 270px;
+      max-width: 410px;
+      animation: fadein 0.6s ease-out both;
+    }
+
+    .card:nth-child(2) { animation-delay: 0.12s; }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: #202124;
+      color: #fff;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #202124;
+    }
+
+    ol {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+    .step-tool {
+      font-size: 13px;
+      font-weight: 600;
+      color: #202124;
+      margin-bottom: 2px;
+    }
+
+    .step-detail {
+      font-size: 12px;
+      color: #5f6368;
+      line-height: 1.6;
+    }
+
+    /* ── Notes ── */
+    .notes {
+      background: #f8f9fa;
+      border: 1px solid #dadce0;
+      border-radius: 16px;
+      padding: 24px 28px;
+      width: 100%;
+      max-width: 600px;
+      animation: fadein 0.6s 0.24s ease-out both;
+    }
+
+    .notes-title {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #5f6368;
+      margin-bottom: 14px;
+    }
+
+    .notes ul {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .notes li {
+      font-size: 12px;
+      color: #5f6368;
+      line-height: 1.6;
+      gap: 8px;
+    }
+
+    .notes li::before {
+      content: '–';
+      color: #bdc1c6;
+      flex-shrink: 0;
     }
   </style>
 </head>
 <body>
-  <div class="aurora-bg">
-    <div class="aurora-layer"></div>
 
-    <div class="content">
+  <canvas id="particles"></canvas>
 
-      <!-- Header -->
-      <div class="fade-in fade-in-1 text-center">
-        <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#64748b;margin-bottom:8px;">
-          Actually you are a rapper bruh hehehe
-        </p>
-        <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:800;color:#0f172a;line-height:1.15;margin:0 0 16px;">
-          AI-Assisted Rap<br>Production Workflow
-        </h1>
-        <p style="color:#475569;font-size:1rem;max-width:480px;margin:0 auto;">
-          Logic Pro &middot; pre-made beats &middot; chat-based mixing &middot; one-click mastering
-        </p>
+  <div class="page">
+
+    <!-- Header -->
+    <div class="hero" style="animation: fadein 0.6s ease-out both;">
+      <p class="eyebrow">Actually you are a rapper bruh hehehe</p>
+      <h1>AI-Assisted Rap<br>Production Workflow</h1>
+      <p>Logic Pro &middot; pre-made beats &middot; chat-based mixing &middot; one-click mastering</p>
+    </div>
+
+    <!-- Cards -->
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-header">
+          <span class="badge">Start here</span>
+          <span class="card-title">Lean Stack</span>
+        </div>
+        <ol>
+          <li><span class="icon">🎙️</span><div><p class="step-tool">Logic Pro</p><p class="step-detail">Record vocals → Flex Pitch tuning → Vocal Doubler thickening</p></div></li>
+          <li><span class="icon">📤</span><div><p class="step-tool">Bounce Stem</p><p class="step-detail">File → Bounce → PCM &middot; Export as WAV or AIFF</p></div></li>
+          <li><span class="icon">🎚️</span><div><p class="step-tool">Cryo Mix</p><p class="step-detail">Upload vocal stem + beat stereo file &middot; Chat-based mix tweaks</p></div></li>
+          <li><span class="icon">✨</span><div><p class="step-tool">LANDR</p><p class="step-detail">One-click AI mastering &middot; Download release-ready track</p></div></li>
+        </ol>
       </div>
 
-      <!-- Stack cards -->
-      <div class="cards-row fade-in fade-in-2">
-
-        <!-- Lean Stack -->
-        <div class="card">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
-            <span class="badge">Start here</span>
-            <h2 style="font-weight:700;font-size:1rem;margin:0;color:#0f172a;">Lean Stack</h2>
-          </div>
-          <ol style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px;">
-            <li style="display:flex;gap:12px;align-items:flex-start;">
-              <span class="step-icon">🎙️</span>
-              <div><p class="step-tool">Logic Pro</p><p class="step-detail">Record vocals → Flex Pitch tuning → Vocal Doubler thickening</p></div>
-            </li>
-            <li style="display:flex;gap:12px;align-items:flex-start;">
-              <span class="step-icon">📤</span>
-              <div><p class="step-tool">Bounce Stem</p><p class="step-detail">File → Bounce → PCM &middot; Export as WAV or AIFF</p></div>
-            </li>
-            <li style="display:flex;gap:12px;align-items:flex-start;">
-              <span class="step-icon">🎚️</span>
-              <div><p class="step-tool">Cryo Mix</p><p class="step-detail">Upload vocal stem + beat stereo file &middot; Chat-based mix tweaks</p></div>
-            </li>
-            <li style="display:flex;gap:12px;align-items:flex-start;">
-              <span class="step-icon">✨</span>
-              <div><p class="step-tool">LANDR</p><p class="step-detail">One-click AI mastering &middot; Download release-ready track</p></div>
-            </li>
-          </ol>
+      <div class="card">
+        <div class="card-header">
+          <span class="badge">Power mode</span>
+          <span class="card-title">Upgraded Stack</span>
         </div>
-
-        <!-- Upgraded Stack -->
-        <div class="card">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
-            <span class="badge">Power mode</span>
-            <h2 style="font-weight:700;font-size:1rem;margin:0;color:#0f172a;">Upgraded Stack</h2>
-          </div>
-          <ol style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px;">
-            <li style="display:flex;gap:12px;align-items:flex-start;">
-              <span class="step-icon">🎙️</span>
-              <div><p class="step-tool">Logic Pro</p><p class="step-detail">Record vocals → Flex Pitch → Vocal Doubler</p></div>
-            </li>
-            <li style="display:flex;gap:12px;align-items:flex-start;">
-              <span class="step-icon">🎤</span>
-              <div><p class="step-tool">SoundID VoiceAI</p><p class="step-detail">Generate up to 8 vocal layers from a single take &middot; AU/VST3 plugin</p></div>
-            </li>
-            <li style="display:flex;gap:12px;align-items:flex-start;">
-              <span class="step-icon">📤</span>
-              <div><p class="step-tool">Bounce Stem</p><p class="step-detail">Export thickened vocal stem as WAV/AIFF</p></div>
-            </li>
-            <li style="display:flex;gap:12px;align-items:flex-start;">
-              <span class="step-icon">🎚️</span>
-              <div><p class="step-tool">Cryo Mix</p><p class="step-detail">Mix layered vocals over stereo beat &middot; Dial in with chat prompts</p></div>
-            </li>
-            <li style="display:flex;gap:12px;align-items:flex-start;">
-              <span class="step-icon">✨</span>
-              <div><p class="step-tool">LANDR / Ozone</p><p class="step-detail">LANDR for speed &middot; iZotope Ozone inside Logic for more control</p></div>
-            </li>
-          </ol>
-        </div>
-      </div>
-
-      <!-- Notes -->
-      <div class="card fade-in fade-in-3" style="max-width:600px;width:100%;">
-        <h3 style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#0f172a;margin:0 0 12px;">
-          Key Clarifications
-        </h3>
-        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
-          <li style="display:flex;gap:8px;font-size:0.75rem;color:#475569;line-height:1.6;">
-            <span style="color:#94a3b8;flex-shrink:0;">–</span>
-            SoundID VoiceAI layers your vocal — it does NOT generate beats or instrumentals
-          </li>
-          <li style="display:flex;gap:8px;font-size:0.75rem;color:#475569;line-height:1.6;">
-            <span style="color:#94a3b8;flex-shrink:0;">–</span>
-            Cryo Mix is purpose-built for the rapper vocal + stereo beat use case
-          </li>
-          <li style="display:flex;gap:8px;font-size:0.75rem;color:#475569;line-height:1.6;">
-            <span style="color:#94a3b8;flex-shrink:0;">–</span>
-            RoEx Automix requires individual stems — skip it for pre-made beat workflows
-          </li>
-        </ul>
+        <ol>
+          <li><span class="icon">🎙️</span><div><p class="step-tool">Logic Pro</p><p class="step-detail">Record vocals → Flex Pitch → Vocal Doubler</p></div></li>
+          <li><span class="icon">🎤</span><div><p class="step-tool">SoundID VoiceAI</p><p class="step-detail">Generate up to 8 vocal layers from a single take &middot; AU/VST3 plugin</p></div></li>
+          <li><span class="icon">📤</span><div><p class="step-tool">Bounce Stem</p><p class="step-detail">Export thickened vocal stem as WAV/AIFF</p></div></li>
+          <li><span class="icon">🎚️</span><div><p class="step-tool">Cryo Mix</p><p class="step-detail">Mix layered vocals over stereo beat &middot; Dial in with chat prompts</p></div></li>
+          <li><span class="icon">✨</span><div><p class="step-tool">LANDR / Ozone</p><p class="step-detail">LANDR for speed &middot; iZotope Ozone inside Logic for more control</p></div></li>
+        </ol>
       </div>
 
     </div>
+
+    <!-- Notes -->
+    <div class="notes">
+      <p class="notes-title">Key Clarifications</p>
+      <ul>
+        <li>SoundID VoiceAI layers your vocal — it does NOT generate beats or instrumentals</li>
+        <li>Cryo Mix is purpose-built for the rapper vocal + stereo beat use case</li>
+        <li>RoEx Automix requires individual stems — skip it for pre-made beat workflows</li>
+      </ul>
+    </div>
+
   </div>
+
+  <script>
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+
+    const COLORS = [
+      '#4285f4','#4285f4','#4285f4','#4285f4',
+      '#ea4335','#fbbc04','#34a853',
+      '#ff6d00','#ab47bc','#00acc1','#e91e63',
+    ];
+
+    let W, H;
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const particles = [];
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 1.5 + Math.random() * 4;
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        this.w = 2 + Math.random() * 3;
+        this.h = 5 + Math.random() * 9;
+        this.rot = Math.random() * Math.PI * 2;
+        this.drot = (Math.random() - 0.5) * 0.12;
+        this.alpha = 0.7 + Math.random() * 0.3;
+        this.decay = 0.012 + Math.random() * 0.012;
+        this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += 0.04;           // gentle gravity
+        this.vx *= 0.99;
+        this.rot += this.drot;
+        this.alpha -= this.decay;
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.alpha);
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rot);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(-this.w / 2, -this.h / 2, this.w, this.h);
+        ctx.restore();
+      }
+    }
+
+    let mx = W / 2, my = H / 2;
+    let burst = 0;
+
+    window.addEventListener('mousemove', e => {
+      mx = e.clientX;
+      my = e.clientY;
+      burst += 3;   // spawn rate on move
+    });
+
+    function loop() {
+      ctx.clearRect(0, 0, W, H);
+
+      // spawn
+      const spawn = Math.min(burst, 6);
+      for (let i = 0; i < spawn; i++) {
+        particles.push(new Particle(mx, my));
+      }
+      burst = Math.max(0, burst - spawn);
+
+      // update + draw
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].draw();
+        if (particles[i].alpha <= 0) particles.splice(i, 1);
+      }
+
+      requestAnimationFrame(loop);
+    }
+    loop();
+  </script>
+
 </body>
 </html>
