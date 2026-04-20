@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PACE — Los Angeles Run Club</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #09090B;
+      --surface: #111113;
+      --border: rgba(255,255,255,0.1);
+      --text: #FAFAF9;
+      --muted: rgba(255,255,255,0.45);
+      --accent: #E85D2C;
+      --accent-hover: #d04d1e;
+      --heading-font: 'Bodoni Moda', Georgia, serif;
+      --body-font: 'Jost', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body-font);
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Utilities ─────────────────────────────── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+    @media (max-width: 768px) { .container { padding: 0 24px; } }
+
+    .serif { font-family: var(--heading-font); font-weight: 400; }
+    .label {
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.65s cubic-bezier(0.22,1,0.36,1);
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+    .fade-in.d1 { transition-delay: 0.1s; }
+    .fade-in.d2 { transition-delay: 0.2s; }
+    .fade-in.d3 { transition-delay: 0.3s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ── Nav ───────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      background: rgba(9,9,11,0.88);
+      backdrop-filter: blur(10px);
+    }
+    @media (max-width: 768px) { nav { padding: 0 24px; } }
+
+    .nav-logo {
+      font-family: var(--heading-font);
+      font-size: 14px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    @media (max-width: 768px) { .nav-links { display: none; } }
+
+    .nav-links a {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 20px;
+      font-family: var(--body-font);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { background: var(--accent-hover); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.5); }
+    .btn-white { background: #fff; color: var(--accent); }
+    .btn-white:hover { background: rgba(255,255,255,0.9); }
+
+    /* ── Hero ──────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 128px 48px 80px;
+      position: relative;
+    }
+    @media (max-width: 768px) { #hero { padding: 128px 24px 64px; } }
+
+    .hero-label {
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: var(--heading-font);
+      font-size: clamp(3.5rem, 12vw, 10rem);
+      font-weight: 400;
+      line-height: 0.9;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.35s forwards;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.125rem);
+      color: var(--muted);
+      max-width: 420px;
+      margin-bottom: 40px;
+      line-height: 1.7;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.5s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.65s forwards;
+    }
+    .hero-actions .btn { min-height: 48px; padding: 0 32px; }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px; right: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.2);
+      opacity: 0;
+      animation: fadeUp 0.6s ease 1.4s forwards;
+    }
+    @media (max-width: 768px) { .scroll-hint { display: none; } }
+    .scroll-hint span {
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+    }
+    .scroll-hint svg { width: 14px; height: 14px; }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: none; }
+    }
+
+    /* ── Marquee ───────────────────────────────── */
+    .marquee-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 0;
+      overflow: hidden;
+    }
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-track span {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.18);
+      padding: 0 40px;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ── About ─────────────────────────────────── */
+    #about {
+      padding: 96px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; } }
+
+    .about-number {
+      font-family: var(--heading-font);
+      font-size: clamp(5rem, 14vw, 11rem);
+      font-weight: 400;
+      line-height: 1;
+      color: rgba(232,93,44,0.15);
+      user-select: none;
+    }
+    .about-heading {
+      font-family: var(--heading-font);
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-top: -16px;
+    }
+    .about-body { color: var(--muted); line-height: 1.8; }
+    .about-body p + p { margin-top: 16px; }
+    .about-body p:first-child { color: rgba(255,255,255,0.85); font-size: 1.05rem; }
+
+    .link-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      margin-top: 24px;
+      transition: gap 0.2s;
+    }
+    .link-arrow:hover { gap: 14px; }
+    .link-arrow svg { width: 12px; height: 12px; }
+
+    /* ── Events ────────────────────────────────── */
+    #events {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+    .section-title {
+      font-family: var(--heading-font);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 400;
+    }
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+    @media (max-width: 900px) { .events-grid { grid-template-columns: 1fr; } }
+
+    .event-card {
+      background: var(--bg);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      cursor: pointer;
+      transition: background 0.25s;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .event-card:hover { background: rgba(255,255,255,0.025); }
+
+    .event-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    .event-date {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .event-name {
+      font-family: var(--heading-font);
+      font-size: 1.25rem;
+      font-weight: 400;
+    }
+    .event-arrow {
+      color: rgba(255,255,255,0.2);
+      transition: color 0.2s, transform 0.2s;
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+    .event-card:hover .event-arrow { color: rgba(255,255,255,0.6); transform: translateX(4px); }
+
+    .event-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .event-meta-row { display: flex; align-items: center; gap: 8px; }
+    .event-meta-row svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+    .event-card .btn-outline {
+      width: 100%;
+      font-size: 10px;
+    }
+
+    /* ── How it works ──────────────────────────── */
+    #how {
+      padding: 96px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      margin-top: 64px;
+    }
+    @media (max-width: 768px) { .steps-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+    .step-num {
+      font-family: var(--heading-font);
+      font-size: 4.5rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.06);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .step-title {
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      margin-bottom: 12px;
+    }
+    .step-desc { font-size: 13px; color: var(--muted); line-height: 1.75; }
+
+    /* ── Stats ─────────────────────────────────── */
+    #stats {
+      background: rgba(255,255,255,0.018);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 0;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+    @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .stat-value {
+      font-family: var(--heading-font);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .stat-label {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Testimonials ──────────────────────────── */
+    #community {
+      padding: 96px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 64px;
+    }
+    @media (max-width: 768px) { .testimonials-grid { grid-template-columns: 1fr; } }
+
+    .testimonial {
+      border: 1px solid var(--border);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      transition: border-color 0.25s;
+    }
+    .testimonial:hover { border-color: rgba(255,255,255,0.2); }
+
+    .testimonial-star svg { color: var(--accent); width: 14px; height: 14px; }
+    .testimonial blockquote {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.8);
+    }
+    .testimonial-author { font-size: 14px; font-weight: 500; }
+    .testimonial-role {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── CTA ───────────────────────────────────── */
+    #cta {
+      background: var(--accent);
+      padding: 112px 0;
+      text-align: center;
+    }
+    .cta-title {
+      font-family: var(--heading-font);
+      font-size: clamp(2.5rem, 7vw, 6rem);
+      font-weight: 400;
+      line-height: 1.05;
+      color: #fff;
+      margin-bottom: 24px;
+    }
+    .cta-sub {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 400px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    /* ── Footer ────────────────────────────────── */
+    footer {
+      padding: 48px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 768px) {
+      footer { flex-direction: column; text-align: center; padding: 48px 24px; }
+    }
+    .footer-logo {
+      font-family: var(--heading-font);
+      font-size: 14px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+    }
+    .footer-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .footer-links a {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="nav-logo">PACE</a>
+    <ul class="nav-links">
+      <li><a href="#events">Events</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#community">Community</a></li>
+    </ul>
+    <a href="#cta" class="btn btn-accent">Join Free</a>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <p class="hero-label">Los Angeles Run Club</p>
+    <h1 class="hero-title serif">Run<br>Together.</h1>
+    <p class="hero-sub">
+      Free community runs across LA. Every pace welcome.
+      No membership, no ego — just miles with people who show up.
+    </p>
+    <div class="hero-actions">
+      <a href="#events" class="btn btn-accent">
+        Find a Run
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </a>
+      <a href="#events" class="btn btn-outline">View Calendar</a>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M4 9l4 4 4-4"/></svg>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <span>Community &middot; Pace &middot; Distance &middot; Community &middot; Pace &middot; Distance &middot; Community &middot; Pace &middot; Distance &nbsp;</span>
+      <span>Community &middot; Pace &middot; Distance &middot; Community &middot; Pace &middot; Distance &middot; Community &middot; Pace &middot; Distance &nbsp;</span>
+      <span>Community &middot; Pace &middot; Distance &middot; Community &middot; Pace &middot; Distance &middot; Community &middot; Pace &middot; Distance &nbsp;</span>
+      <span>Community &middot; Pace &middot; Distance &middot; Community &middot; Pace &middot; Distance &middot; Community &middot; Pace &middot; Distance &nbsp;</span>
+    </div>
+  </div>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="fade-in">
+          <p class="about-number serif">2K+</p>
+          <h2 class="about-heading serif">runners.<br>one city.</h2>
+        </div>
+        <div class="fade-in d1">
+          <div class="about-body">
+            <p>PACE was built on a simple idea: running is better together.</p>
+            <p>
+              We organize free group runs across Los Angeles — dawn patrols through
+              Griffith Park, night runs through DTLA, trail sessions in the canyons.
+              All paces. All levels. All welcome.
+            </p>
+            <p>No membership fee. No app required. Just show up.</p>
+          </div>
+          <a href="#events" class="link-arrow">
+            See upcoming runs
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events -->
+  <section id="events">
+    <div class="container">
+      <div class="section-header fade-in">
+        <h2 class="section-title serif">Upcoming Runs</h2>
+        <a href="#" class="link-arrow" style="display:none;display:inline-flex;">
+          All events
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+      <div class="events-grid">
+
+        <a href="#" class="event-card fade-in">
+          <div class="event-top">
+            <div>
+              <p class="event-date">Sat, May 3</p>
+              <h3 class="event-name serif">Dawn Patrol 5K</h3>
+            </div>
+            <div class="event-arrow">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </div>
+          </div>
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="7" r="3"/><path d="M8 1C5.24 1 3 3.24 3 6c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5z"/></svg>
+              Griffith Park, LA
+            </div>
+            <div class="event-meta-row">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5l2.5 1.5"/></svg>
+              6:00 AM &nbsp;·&nbsp; 8–12 min/mi
+            </div>
+            <div class="event-meta-row">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 13c0-3.31 2.69-6 6-6s6 2.69 6 6"/><circle cx="8" cy="5" r="2.5"/></svg>
+              12 spots left
+            </div>
+          </div>
+          <button class="btn btn-outline" onclick="return false;">Register Free</button>
+        </a>
+
+        <a href="#" class="event-card fade-in d1">
+          <div class="event-top">
+            <div>
+              <p class="event-date">Fri, May 9</p>
+              <h3 class="event-name serif">Urban Night Run</h3>
+            </div>
+            <div class="event-arrow">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </div>
+          </div>
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="7" r="3"/><path d="M8 1C5.24 1 3 3.24 3 6c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5z"/></svg>
+              Downtown LA
+            </div>
+            <div class="event-meta-row">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5l2.5 1.5"/></svg>
+              8:00 PM &nbsp;·&nbsp; 7–10 min/mi
+            </div>
+            <div class="event-meta-row">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 13c0-3.31 2.69-6 6-6s6 2.69 6 6"/><circle cx="8" cy="5" r="2.5"/></svg>
+              4 spots left
+            </div>
+          </div>
+          <button class="btn btn-outline" onclick="return false;">Register Free</button>
+        </a>
+
+        <a href="#" class="event-card fade-in d2">
+          <div class="event-top">
+            <div>
+              <p class="event-date">Sun, May 18</p>
+              <h3 class="event-name serif">Trail Sunrise 10K</h3>
+            </div>
+            <div class="event-arrow">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </div>
+          </div>
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="7" r="3"/><path d="M8 1C5.24 1 3 3.24 3 6c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5z"/></svg>
+              Runyon Canyon
+            </div>
+            <div class="event-meta-row">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5l2.5 1.5"/></svg>
+              5:30 AM &nbsp;·&nbsp; All paces
+            </div>
+            <div class="event-meta-row">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 13c0-3.31 2.69-6 6-6s6 2.69 6 6"/><circle cx="8" cy="5" r="2.5"/></svg>
+              23 spots left
+            </div>
+          </div>
+          <button class="btn btn-outline" onclick="return false;">Register Free</button>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how">
+    <div class="container">
+      <p class="label fade-in">How it works</p>
+      <div class="steps-grid">
+        <div class="fade-in">
+          <p class="step-num serif">01</p>
+          <h3 class="step-title">Pick Your Run</h3>
+          <p class="step-desc">Browse upcoming events by pace, distance, and location. Find your fit.</p>
+        </div>
+        <div class="fade-in d1">
+          <p class="step-num serif">02</p>
+          <h3 class="step-title">Show Up</h3>
+          <p class="step-desc">No registration fee. No gear required. Just lace up and arrive.</p>
+        </div>
+        <div class="fade-in d2">
+          <p class="step-num serif">03</p>
+          <h3 class="step-title">Keep Going</h3>
+          <p class="step-desc">Track your runs, earn badges, and grow with your crew over time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section id="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="fade-in">
+          <p class="stat-value serif">2,400+</p>
+          <p class="stat-label">Active Runners</p>
+        </div>
+        <div class="fade-in d1">
+          <p class="stat-value serif">180</p>
+          <p class="stat-label">Events Per Year</p>
+        </div>
+        <div class="fade-in d2">
+          <p class="stat-value serif">12</p>
+          <p class="stat-label">Cities</p>
+        </div>
+        <div class="fade-in d3">
+          <p class="stat-value serif">847K</p>
+          <p class="stat-label">Miles Logged</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="community">
+    <div class="container">
+      <p class="label fade-in">Community</p>
+      <div class="testimonials-grid">
+        <div class="testimonial fade-in">
+          <div class="testimonial-star">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l1.85 3.74L14 5.5l-3 2.92.71 4.13L8 10.4l-3.71 2.15L5 8.42 2 5.5l4.15-.76z"/></svg>
+          </div>
+          <blockquote>
+            &ldquo;I moved to LA not knowing a single person. Three months later I have a crew I run with every week.&rdquo;
+          </blockquote>
+          <div>
+            <p class="testimonial-author">Maya T.</p>
+            <p class="testimonial-role">Member since 2023</p>
+          </div>
+        </div>
+        <div class="testimonial fade-in d1">
+          <div class="testimonial-star">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l1.85 3.74L14 5.5l-3 2.92.71 4.13L8 10.4l-3.71 2.15L5 8.42 2 5.5l4.15-.76z"/></svg>
+          </div>
+          <blockquote>
+            &ldquo;Finally broke the 8-minute mile with people pushing me. The community is everything.&rdquo;
+          </blockquote>
+          <div>
+            <p class="testimonial-author">James R.</p>
+            <p class="testimonial-role">Member since 2022</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta">
+    <div class="container">
+      <div class="fade-in">
+        <h2 class="cta-title serif">Your next run<br>starts here.</h2>
+        <p class="cta-sub">Join thousands of LA runners. Free to join, free to run.</p>
+        <a href="#" class="btn btn-white" style="min-height:52px;padding:0 40px;margin:0 auto;">
+          Join PACE Free
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <a href="#" class="footer-logo">PACE</a>
+    <ul class="footer-links">
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">Strava</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <p class="footer-copy">&copy; 2026 PACE Run Club</p>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }),
+      { threshold: 0.1, rootMargin: '-50px' }
+    );
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

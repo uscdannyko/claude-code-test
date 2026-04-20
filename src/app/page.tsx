@@ -1,5 +1,5 @@
-import { AuroraBackgroundDemo } from "@/components/aurora-demo";
+import { RunClubLanding } from "@/components/run-club-landing";
 
 export default function Home() {
-  return <AuroraBackgroundDemo />;
+  return <RunClubLanding />;
 }
