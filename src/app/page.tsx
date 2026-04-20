@@ -1,4 +1,4 @@
-import RunClubLanding from "../../run-club-landing";
+import { RunClubLanding } from "@/components/run-club-landing";
 
 export default function Home() {
   return <RunClubLanding />;
