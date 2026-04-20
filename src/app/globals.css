@@ -130,6 +130,9 @@
 }
 
 @theme inline {
+  --font-heading: var(--font-bodoni-moda);
+  --font-sans: var(--font-jost);
+
   --animate-aurora: aurora 60s linear infinite;
 
   @keyframes aurora {
@@ -139,6 +142,11 @@
     to {
       background-position: 350% 50%, 350% 50%;
     }
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
 }
 
